@@ -31,6 +31,13 @@
 		dispatch('close');
 	}
 
+	function handleKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			closeModal();
+		}
+	}
+
 	function handleSubmit(e: SubmitEvent) {
 		e.preventDefault();
 		
@@ -82,15 +89,16 @@
 	<div
 		bind:this={overlay}
 		class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-sm"
-		on:click={closeModal}
+		onclick={closeModal}
+		onkeydown={handleKeyDown}
 		role="button"
-		tabindex="-1"
+		tabindex="0"
 		aria-label="Close modal"
 	>
 		<div
 			bind:this={modal}
 			class="absolute inset-0 flex items-center justify-center p-4"
-			on:click|stopPropagation
+			onclick={(e) => e.stopPropagation()}
 		>
 			<div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-secondary-black border border-primary-gold/20 rounded-lg">
 				<!-- Header -->
@@ -99,7 +107,7 @@
 						APPLY FOR TRIALS
 					</h2>
 					<button
-						on:click={closeModal}
+						onclick={closeModal}
 						class="w-8 h-8 flex items-center justify-center text-accent-white/70 hover:text-primary-gold transition-colors duration-300"
 						aria-label="Close"
 					>
@@ -247,7 +255,7 @@
 						<div class="flex items-center justify-end gap-4 pt-4">
 							<button
 								type="button"
-								on:click={closeModal}
+								onclick={closeModal}
 								class="headline px-6 py-3 border border-white/20 text-accent-white/70 uppercase tracking-wider text-sm hover:border-accent-white/40 hover:text-accent-white transition-all duration-300"
 							>
 								CANCEL

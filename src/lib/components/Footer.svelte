@@ -163,8 +163,8 @@
 				© 2025 Emirates Sport Club. All rights reserved.
 			</p>
 			<div class="flex items-center gap-6 text-xs text-accent-white/50">
-				<a href="#" class="hover:text-primary-gold transition-colors duration-300">Privacy Policy</a>
-				<a href="#" class="hover:text-primary-gold transition-colors duration-300">Terms of Service</a>
+				<a href="/privacy" class="hover:text-primary-gold transition-colors duration-300">Privacy Policy</a>
+				<a href="/terms" class="hover:text-primary-gold transition-colors duration-300">Terms of Service</a>
 			</div>
 		</div>
 	</div>
