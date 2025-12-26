@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { onMount, onDestroy } from 'svelte';
 	import { afterNavigate } from '$app/navigation';
+	import { browser } from '$app/environment';
 	import '../app.css';
 	import { initLenis, destroyLenis, getLenis, pauseLenis, resumeLenis } from '$lib/utils/lenis';
 	import { ScrollTrigger } from '$lib/utils/gsap';
@@ -14,6 +15,7 @@
 	let { children, data } = $props();
 
 	let isLoaded = $state(false);
+	let mounted = $state(false);
 
 	// SEO Meta Tags
 	const pageTitle = $derived($page.url.pathname === '/'
@@ -43,6 +45,10 @@
 	const pageImage = $derived('https://emiratessportclub.com/og-image.jpg');
 
 	onMount(() => {
+		mounted = true;
+		
+		if (!browser) return;
+
 		// Preloader sırasında Lenis'i pause et
 		pauseLenis();
 
@@ -50,7 +56,7 @@
 		const lenis = initLenis();
 
 		// ScrollTrigger'ı Lenis ile senkronize et
-		if (lenis) {
+		if (lenis && typeof ScrollTrigger !== 'undefined') {
 			lenis.on('scroll', ScrollTrigger.update);
 		}
 
@@ -72,6 +78,8 @@
 
 	// Page navigation sonrası işlemler
 	afterNavigate(() => {
+		if (!browser || typeof ScrollTrigger === 'undefined') return;
+		
 		// ScrollTrigger'ı güncelle
 		ScrollTrigger.refresh();
 
@@ -104,7 +112,7 @@
 	<!-- Additional Meta -->
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="theme-color" content="#0A0A0A" />
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="icon" href="/Al_Emirate.png" type="image/png" />
 	<link rel="canonical" content="https://emiratessportclub.com{$page.url.pathname}" />
 </svelte:head>
 
@@ -112,8 +120,10 @@
 	<Preloader on:loaded={handlePreloaderLoaded} />
 {/if}
 
-<CustomCursor />
-<Navbar />
+{#if mounted}
+	<CustomCursor />
+	<Navbar />
+{/if}
 <PageTransition />
 
 <main class="relative">

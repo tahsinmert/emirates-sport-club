@@ -80,7 +80,7 @@
 	let scrollTriggerInstance: ScrollTrigger | null = null;
 
 	function setupHorizontalScroll() {
-		if (typeof window === 'undefined' || !gallerySection || !galleryTrack) return;
+		if (typeof window === 'undefined' || !gallerySection || !galleryTrack || typeof ScrollTrigger === 'undefined') return;
 
 		// ScrollTrigger.matchMedia ile responsive optimizasyon
 		ScrollTrigger.matchMedia({
@@ -138,7 +138,7 @@
 	}
 
 	function cleanup() {
-		if (typeof window === 'undefined') return;
+		if (typeof window === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 		
 		// ScrollTrigger'ları temizle
 		if (scrollTriggerInstance) {

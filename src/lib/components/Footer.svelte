@@ -20,7 +20,7 @@
 	}
 
 	onMount(() => {
-		if (typeof window === 'undefined' || !footer) return;
+		if (typeof window === 'undefined' || !footer || typeof ScrollTrigger === 'undefined') return;
 
 		// Footer reveal animation
 		ScrollTrigger.create({

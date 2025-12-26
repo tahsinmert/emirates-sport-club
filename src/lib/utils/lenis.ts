@@ -20,14 +20,18 @@ export function initLenis() {
 
 	function raf(time: number) {
 		lenis?.raf(time);
-		ScrollTrigger.update();
+		if (typeof ScrollTrigger !== 'undefined') {
+			ScrollTrigger.update();
+		}
 		requestAnimationFrame(raf);
 	}
 
 	requestAnimationFrame(raf);
 
 	// Lenis scroll event'ini ScrollTrigger'a bağla
-	lenis.on('scroll', ScrollTrigger.update);
+	if (typeof ScrollTrigger !== 'undefined') {
+		lenis.on('scroll', ScrollTrigger.update);
+	}
 
 	return lenis;
 }

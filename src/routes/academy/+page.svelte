@@ -67,7 +67,7 @@
 	}
 
 	function setupTimelineAnimations() {
-		if (typeof window === 'undefined' || !timelineSection || !progressLine) return;
+		if (typeof window === 'undefined' || !timelineSection || !progressLine || typeof ScrollTrigger === 'undefined') return;
 
 		// Progress line animation
 		gsap.set(progressLine, {
@@ -145,7 +145,9 @@
 		}, 100);
 
 		return () => {
-			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			}
 		};
 	});
 </script>

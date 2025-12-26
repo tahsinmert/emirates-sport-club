@@ -28,7 +28,7 @@
 	let contentSection: HTMLElement;
 
 	function setupAnimations() {
-		if (typeof window === 'undefined' || !heroSection || !contentSection) return;
+		if (typeof window === 'undefined' || !heroSection || !contentSection || typeof ScrollTrigger === 'undefined') return;
 
 		gsap.fromTo(
 			heroSection,
@@ -72,7 +72,9 @@
 		}, 100);
 
 		return () => {
-			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			}
 		};
 	});
 </script>

@@ -160,7 +160,7 @@
 	}
 
 	function setupScrollReveal() {
-		if (typeof window === 'undefined' || newsCards.length === 0) return;
+		if (typeof window === 'undefined' || newsCards.length === 0 || typeof ScrollTrigger === 'undefined') return;
 
 		// Use ScrollTrigger.batch for better performance
 		ScrollTrigger.batch('.news-card', {
@@ -201,7 +201,9 @@
 		}, 200);
 
 		return () => {
-			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			}
 		};
 	});
 </script>

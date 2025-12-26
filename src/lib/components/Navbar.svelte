@@ -111,9 +111,20 @@
 		: ''}"
 >
 	<!-- Logo -->
-	<a href="/" class="headline text-2xl font-bold tracking-tighter uppercase text-white flex-shrink-0">
-		EMIRATES SC
+	<a href="/" class="flex-shrink-0 flex items-center">
+		<img 
+			src="/Al_Emirate.png" 
+			alt="Emirates Club Logo" 
+			class="h-10 md:h-12 w-auto object-contain transition-opacity duration-300 hover:opacity-80"
+		/>
 	</a>
+
+	<!-- Signature - Next to Logo (Desktop only) -->
+	<div class="hidden md:flex items-center ml-4 flex-shrink-0">
+		<div class="signature-container">
+			<span class="signature-text">Emirates Sport Club</span>
+		</div>
+	</div>
 
 	<!-- Desktop Navigation - Right Side -->
 	<div class="hidden md:flex items-center gap-8 lg:gap-12 ml-auto">
@@ -127,13 +138,6 @@
 				{link.name}
 			</a>
 		{/each}
-	</div>
-
-	<!-- Signature - Right Side (Desktop only) -->
-	<div class="hidden md:flex items-center ml-8 flex-shrink-0">
-		<div class="signature-container">
-			<span class="signature-text">Emirates Sport Club</span>
-		</div>
 	</div>
 
 	<!-- Mobile Menu Button -->

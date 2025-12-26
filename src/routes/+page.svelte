@@ -131,7 +131,7 @@
 	}
 
 	function setupStackedPinning() {
-		if (typeof window === 'undefined' || sectionElements.length === 0) return;
+		if (typeof window === 'undefined' || sectionElements.length === 0 || typeof ScrollTrigger === 'undefined') return;
 
 		// Tüm video'ları başlangıçta durdur
 		sectionVideos.forEach((video) => {
@@ -359,7 +359,7 @@
 	}
 
 	function cleanup() {
-		if (typeof window === 'undefined') return;
+		if (typeof window === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 		
 		// Tüm ScrollTrigger instance'larını temizle
 		scrollTriggerInstances.forEach((trigger) => {
@@ -424,7 +424,7 @@
 	}
 
 	onMount(() => {
-		if (typeof window === 'undefined') return;
+		if (typeof window === 'undefined' || typeof document === 'undefined') return;
 
 		// Section elementlerini topla (.section class'ına sahip elementler)
 		const sectionNodes = document.querySelectorAll('.section');

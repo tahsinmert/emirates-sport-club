@@ -184,7 +184,7 @@
 
 	// Featured section parallax
 	function setupFeaturedParallax() {
-		if (typeof window === 'undefined' || !featuredSection || !featuredImage) return;
+		if (typeof window === 'undefined' || !featuredSection || !featuredImage || typeof ScrollTrigger === 'undefined') return;
 
 		ScrollTrigger.matchMedia({
 			// Desktop: Full parallax effect
@@ -229,7 +229,7 @@
 
 	// Product grid stagger animation
 	function setupProductGridReveal() {
-		if (typeof window === 'undefined' || productCards.length === 0) return;
+		if (typeof window === 'undefined' || productCards.length === 0 || typeof ScrollTrigger === 'undefined') return;
 
 		ScrollTrigger.matchMedia({
 			// Desktop: Full animations with parallax
@@ -335,7 +335,9 @@
 		}, 300);
 
 		return () => {
-			ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			if (typeof ScrollTrigger !== 'undefined') {
+				ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+			}
 		};
 	});
 </script>
