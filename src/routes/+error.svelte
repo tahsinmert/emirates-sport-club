@@ -54,7 +54,7 @@
 				GO HOME
 			</a>
 			<button
-				on:click={() => window.history.back()}
+				on:click={() => { if (typeof window !== 'undefined') window.history.back(); }}
 				class="headline px-8 py-4 border-2 border-accent-white/20 text-accent-white/70 uppercase tracking-wider text-sm md:text-base hover:border-accent-white/40 hover:text-accent-white transition-all duration-300"
 			>
 				GO BACK
