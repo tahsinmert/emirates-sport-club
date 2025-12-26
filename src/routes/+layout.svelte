@@ -4,7 +4,7 @@
 	import { browser } from '$app/environment';
 	import '../app.css';
 	import { initLenis, destroyLenis, getLenis, pauseLenis, resumeLenis } from '$lib/utils/lenis';
-	import { ScrollTrigger } from '$lib/utils/gsap';
+	import { loadScrollTrigger } from '$lib/utils/gsap';
 	import PageTransition from '$lib/components/PageTransition.svelte';
 	import CustomCursor from '$lib/components/CustomCursor.svelte';
 	import Navbar from '$lib/components/Navbar.svelte';
@@ -55,10 +55,14 @@
 		// Lenis'i initialize et (ama pause durumunda)
 		const lenis = initLenis();
 
-		// ScrollTrigger'ı Lenis ile senkronize et
-		if (lenis && typeof ScrollTrigger !== 'undefined') {
-			lenis.on('scroll', ScrollTrigger.update);
-		}
+		// ScrollTrigger'ı yükle ve Lenis ile senkronize et
+		loadScrollTrigger().then((ScrollTrigger) => {
+			if (lenis && ScrollTrigger) {
+				lenis.on('scroll', ScrollTrigger.update);
+			}
+		}).catch(() => {
+			// ScrollTrigger yüklenemezse sessizce geç
+		});
 
 		return () => {
 			destroyLenis();
@@ -78,10 +82,16 @@
 
 	// Page navigation sonrası işlemler
 	afterNavigate(() => {
-		if (!browser || typeof ScrollTrigger === 'undefined') return;
+		if (!browser) return;
 		
-		// ScrollTrigger'ı güncelle
-		ScrollTrigger.refresh();
+		// ScrollTrigger'ı yükle ve güncelle
+		loadScrollTrigger().then((ScrollTrigger) => {
+			if (ScrollTrigger) {
+				ScrollTrigger.refresh();
+			}
+		}).catch(() => {
+			// ScrollTrigger yüklenemezse sessizce geç
+		});
 
 		// Lenis scroll pozisyonunu güncelle
 		const lenis = getLenis();

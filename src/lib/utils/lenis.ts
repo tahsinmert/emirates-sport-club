@@ -1,10 +1,9 @@
 import Lenis from 'lenis';
-import { ScrollTrigger } from '$lib/utils/gsap';
 
 let lenis: Lenis | null = null;
 
 export function initLenis() {
-	if (typeof window === 'undefined') return;
+	if (typeof window === 'undefined') return null;
 
 	lenis = new Lenis({
 		duration: 1.5,
@@ -18,20 +17,31 @@ export function initLenis() {
 		infinite: false
 	});
 
+	// ScrollTrigger'ı dynamic import ile yükle (async, non-blocking)
+	let scrollTriggerInstance: any = null;
+	
+	import('$lib/utils/gsap').then(({ loadScrollTrigger }) => {
+		return loadScrollTrigger();
+	}).then((ScrollTrigger) => {
+		if (!ScrollTrigger || !lenis) return;
+		
+		scrollTriggerInstance = ScrollTrigger;
+
+		// Lenis scroll event'ini ScrollTrigger'a bağla
+		lenis.on('scroll', ScrollTrigger.update);
+	}).catch(() => {
+		// ScrollTrigger yüklenemezse sessizce geç
+	});
+
+	// RAF loop - ScrollTrigger yüklenmişse kullan
 	function raf(time: number) {
 		lenis?.raf(time);
-		if (typeof ScrollTrigger !== 'undefined') {
-			ScrollTrigger.update();
+		if (scrollTriggerInstance) {
+			scrollTriggerInstance.update();
 		}
 		requestAnimationFrame(raf);
 	}
-
 	requestAnimationFrame(raf);
-
-	// Lenis scroll event'ini ScrollTrigger'a bağla
-	if (typeof ScrollTrigger !== 'undefined') {
-		lenis.on('scroll', ScrollTrigger.update);
-	}
 
 	return lenis;
 }

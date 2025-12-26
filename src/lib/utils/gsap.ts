@@ -1,23 +1,38 @@
 import { gsap } from 'gsap';
-import { ScrollTrigger as ST } from 'gsap/ScrollTrigger';
 
-// ScrollTrigger'ı export et - SSR sırasında null olabilir
-let ScrollTrigger: typeof ST | null = ST;
+// ScrollTrigger'ı lazy load et - sadece browser'da yükle
+// Top-level import yapmıyoruz çünkü SSR sırasında sorun yaratabilir
+let ScrollTrigger: any = null;
+let scrollTriggerPromise: Promise<any> | null = null;
 
-// GSAP ScrollTrigger'ı sadece browser'da kaydet
-if (typeof window !== 'undefined') {
-	try {
+// ScrollTrigger'ı dynamic import ile yükle
+async function loadScrollTrigger() {
+	if (typeof window === 'undefined') return null;
+	
+	if (ScrollTrigger) return ScrollTrigger;
+	
+	if (scrollTriggerPromise) return scrollTriggerPromise;
+	
+	scrollTriggerPromise = import('gsap/ScrollTrigger').then((module) => {
+		const ST = module.ScrollTrigger;
 		gsap.registerPlugin(ST);
 		ScrollTrigger = ST;
-	} catch (e) {
-		// SSR sırasında hata olursa sessizce geç
+		return ST;
+	}).catch(() => {
 		ScrollTrigger = null;
-	}
-} else {
-	// SSR sırasında ScrollTrigger null olarak ayarla
-	ScrollTrigger = null;
+		return null;
+	});
+	
+	return scrollTriggerPromise;
 }
 
-export { gsap, ScrollTrigger };
+// Browser'da ScrollTrigger'ı hemen yükle (non-blocking)
+if (typeof window !== 'undefined') {
+	loadScrollTrigger().catch(() => {
+		// Sessizce geç
+	});
+}
+
+export { gsap, ScrollTrigger, loadScrollTrigger };
 export default gsap;
 
