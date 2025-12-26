@@ -244,7 +244,7 @@
 			{#each ['ALL', 'MATCHES', 'TEAM', 'CLUB'] as filter}
 				{@const filterType = filter as FilterType}
 				<button
-					on:click={() => handleFilterClick(filterType)}
+					onclick={() => handleFilterClick(filterType)}
 					class="headline text-sm md:text-base uppercase tracking-wider transition-all duration-300 {activeFilter === filterType
 						? 'text-primary-gold border-b-2 border-primary-gold pb-1'
 						: 'text-accent-white/60 hover:text-accent-white hover:border-b-2 hover:border-accent-white/40 pb-1'}"

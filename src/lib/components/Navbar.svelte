@@ -41,6 +41,13 @@
 		}
 	}
 
+	function handleOverlayKeyDown(e: KeyboardEvent) {
+		if (e.key === 'Enter' || e.key === ' ') {
+			e.preventDefault();
+			closeMobileMenu();
+		}
+	}
+
 	onMount(() => {
 		if (typeof window === 'undefined') return;
 
@@ -142,7 +149,7 @@
 
 	<!-- Mobile Menu Button -->
 	<button
-		on:click={toggleMobileMenu}
+		onclick={toggleMobileMenu}
 		class="md:hidden relative w-8 h-8 flex flex-col justify-center items-center gap-1.5 z-[101] ml-auto"
 		aria-label={isMobileMenuOpen ? 'Close Menu' : 'Open Menu'}
 	>
@@ -166,14 +173,15 @@
 {#if isMobileMenuOpen}
 	<div
 		class="fixed inset-0 z-[2000] bg-black/95 backdrop-blur-md md:hidden"
-		on:click={closeMobileMenu}
+		onclick={closeMobileMenu}
+		onkeydown={handleOverlayKeyDown}
 		role="button"
-		tabindex="-1"
+		tabindex="0"
 		aria-label="Close menu"
 	>
 		<!-- Close Button - Top Right -->
 		<button
-			on:click={closeMobileMenu}
+			onclick={closeMobileMenu}
 			class="absolute top-8 right-8 w-12 h-12 flex items-center justify-center text-white hover:text-primary-gold transition-colors duration-300 z-[2001]"
 			aria-label="Close menu"
 		>
@@ -196,12 +204,13 @@
 		<!-- Navigation Links -->
 		<div
 			class="h-full flex flex-col items-center justify-center gap-8 px-8"
-			on:click|stopPropagation
+			onclick={(e) => e.stopPropagation()}
+			role="presentation"
 		>
 			{#each navLinks as link}
 				<a
 					href={link.path}
-					on:click={closeMobileMenu}
+					onclick={closeMobileMenu}
 					class="headline text-5xl font-bold uppercase tracking-widest text-white transition-colors duration-300 hover:text-primary-gold {isActive(link.path)
 						? 'text-primary-gold'
 						: ''}"

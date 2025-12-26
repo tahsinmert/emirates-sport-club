@@ -505,7 +505,7 @@
 				{section.subtitle}
 			</p>
 			{#if index === 4}
-				<a href="#" class="inline-block mt-8 text-sm tracking-widest uppercase text-accent-white hover:text-primary-gold transition-colors duration-300 underline decoration-primary-gold/50 hover:decoration-primary-gold">
+				<a href="/academy" class="inline-block mt-8 text-sm tracking-widest uppercase text-accent-white hover:text-primary-gold transition-colors duration-300 underline decoration-primary-gold/50 hover:decoration-primary-gold">
 					Join the Club
 				</a>
 			{/if}
@@ -561,7 +561,7 @@
 
 				<!-- Back to Top Button -->
 				<button
-					on:click={scrollToTop}
+					onclick={scrollToTop}
 					class="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex items-center justify-center w-12 h-12 rounded-full border border-primary-gold/40 hover:border-primary-gold bg-black/20 hover:bg-primary-gold/10 backdrop-blur-sm transition-all duration-300 group"
 					aria-label="Back to Top"
 				>
@@ -579,7 +579,7 @@
 	{#each sections as _, index}
 		<button
 			bind:this={navDots[index]}
-			on:click={() => scrollToSection(index)}
+			onclick={() => scrollToSection(index)}
 			class="w-3 h-3 rounded-full bg-white/40 transition-all duration-300 hover:scale-125 {index === activeSection ? 'scale-150 bg-primary-gold shadow-[0_0_20px_rgba(212,175,55,0.8)]' : ''}"
 			aria-label="Navigate to section {index + 1}"
 		></button>

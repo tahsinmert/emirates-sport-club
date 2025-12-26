@@ -99,6 +99,7 @@
 			bind:this={modal}
 			class="absolute inset-0 flex items-center justify-center p-4"
 			onclick={(e) => e.stopPropagation()}
+			role="presentation"
 		>
 			<div class="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-secondary-black border border-primary-gold/20 rounded-lg">
 				<!-- Header -->
@@ -117,7 +118,7 @@
 
 				<!-- Form -->
 				{#if !submitSuccess}
-					<form bind:this={form} on:submit={handleSubmit} class="p-6 space-y-6">
+					<form bind:this={form} onsubmit={handleSubmit} class="p-6 space-y-6">
 						<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<div>
 								<label for="firstName" class="block text-sm uppercase tracking-wider text-accent-white/70 mb-2">

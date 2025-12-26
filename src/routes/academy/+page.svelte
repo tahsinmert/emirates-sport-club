@@ -255,7 +255,7 @@
 			DO YOU HAVE WHAT IT TAKES?
 		</h2>
 		<button
-			on:click={() => isFormOpen = true}
+			onclick={() => isFormOpen = true}
 			class="headline px-8 py-4 border-2 border-primary-gold text-primary-gold uppercase tracking-wider text-sm md:text-base hover:bg-primary-gold hover:text-secondary-black transition-all duration-300"
 		>
 			APPLY FOR TRIALS
