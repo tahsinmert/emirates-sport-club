@@ -1,0 +1,19 @@
+{
+	"name": "Emirates Sport Club",
+	"short_name": "Emirates SC",
+	"description": "Official website of Emirates Sport Club - Beyond The Game",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#0A0A0A",
+	"theme_color": "#0A0A0A",
+	"orientation": "portrait-primary",
+	"icons": [
+		{
+			"src": "/favicon.svg",
+			"sizes": "any",
+			"type": "image/svg+xml",
+			"purpose": "any maskable"
+		}
+	]
+}
+
