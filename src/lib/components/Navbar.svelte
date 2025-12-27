@@ -3,6 +3,8 @@
 	import { page } from '$app/stores';
 	import { gsap } from '$lib/utils/gsap';
 	import { getLenis } from '$lib/utils/lenis';
+	import { isPreloaderLoaded } from '$lib/stores/preloader';
+	import { get } from 'svelte/store';
 
 	const navLinks = [
 		{ name: 'HOME', path: '/' },
@@ -16,6 +18,9 @@
 	let isScrolled = $state(false);
 	let isMobileMenuOpen = $state(false);
 	let handleScroll: (() => void) | null = null;
+	let preloaderLoaded = $state(false);
+	let scrollListenersSetup = $state(false);
+	let lastScrollY = 0;
 
 	function isActive(path: string): boolean {
 		return $page.url.pathname === path;
@@ -51,48 +56,79 @@
 	onMount(() => {
 		if (typeof window === 'undefined') return;
 
-		let lastScrollY = 0;
-
-		handleScroll = (e?: any) => {
-			const lenis = getLenis();
-			const currentScrollY = e?.scroll || (lenis ? lenis.scroll : window.scrollY || window.pageYOffset);
-			const direction = currentScrollY > lastScrollY ? 1 : -1;
-
-			// Show navbar when scrolling up, hide when scrolling down
-			if (direction === -1 && currentScrollY > 100) {
-				gsap.to(navbar, {
-					yPercent: 0,
-					duration: 0.5,
-					ease: 'power3.out'
-				});
-			} else if (direction === 1 && currentScrollY > 100) {
-				gsap.to(navbar, {
-					yPercent: -100,
-					duration: 0.5,
-					ease: 'power3.out'
-				});
+		// Preloader durumunu kontrol et
+		const unsubscribe = isPreloaderLoaded.subscribe((loaded) => {
+			preloaderLoaded = loaded;
+			
+			// Preloader tamamlandıktan sonra scroll event'lerini başlat
+			if (loaded && navbar) {
+				// Navbar'ı görünür yap
+				gsap.set(navbar, { yPercent: 0 });
+				
+				// Scroll event listener'larını başlat
+				setupScrollListeners();
 			}
+		});
 
-			// Glassmorphism effect on scroll
-			if (currentScrollY > 50) {
-				isScrolled = true;
-			} else {
-				isScrolled = false;
-			}
-
-			lastScrollY = currentScrollY;
-		};
-
-		// Listen to Lenis scroll events
-		const lenis = getLenis();
-		if (lenis) {
-			lenis.on('scroll', handleScroll);
-		} else {
-			window.addEventListener('scroll', handleScroll, { passive: true });
+		// Eğer preloader zaten yüklenmişse direkt başlat
+		const currentState = get(isPreloaderLoaded);
+		if (currentState) {
+			preloaderLoaded = true;
+			setupScrollListeners();
 		}
 
-		// Initial check
-		handleScroll();
+		function setupScrollListeners() {
+			if (!navbar || scrollListenersSetup) return; // Zaten kurulmuşsa tekrar kurma
+
+			scrollListenersSetup = true;
+
+			handleScroll = (e?: any) => {
+				if (!preloaderLoaded) return; // Preloader tamamlanmadan scroll dinleme
+
+				const lenis = getLenis();
+				const currentScrollY = e?.scroll || (lenis ? lenis.scroll : window.scrollY || window.pageYOffset);
+				const direction = currentScrollY > lastScrollY ? 1 : -1;
+
+				// Show navbar when scrolling up, hide when scrolling down
+				if (direction === -1 && currentScrollY > 100) {
+					gsap.to(navbar, {
+						yPercent: 0,
+						duration: 0.5,
+						ease: 'power3.out'
+					});
+				} else if (direction === 1 && currentScrollY > 100) {
+					gsap.to(navbar, {
+						yPercent: -100,
+						duration: 0.5,
+						ease: 'power3.out'
+					});
+				}
+
+				// Glassmorphism effect on scroll
+				if (currentScrollY > 50) {
+					isScrolled = true;
+				} else {
+					isScrolled = false;
+				}
+
+				lastScrollY = currentScrollY;
+			};
+
+			// Listen to Lenis scroll events
+			const lenis = getLenis();
+			if (lenis) {
+				lenis.on('scroll', handleScroll);
+			} else {
+				window.addEventListener('scroll', handleScroll, { passive: true });
+			}
+
+			// Initial check
+			handleScroll();
+		}
+
+		return () => {
+			unsubscribe();
+		};
 	});
 
 	onDestroy(() => {
@@ -115,7 +151,7 @@
 	bind:this={navbar}
 	class="fixed top-0 left-0 w-full z-[100] flex items-center px-8 py-6 transition-transform duration-500 mix-blend-difference text-white {isScrolled
 		? 'backdrop-blur-md bg-gradient-to-b from-black/50 to-transparent'
-		: ''}"
+		: ''} {!preloaderLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}"
 >
 	<!-- Logo -->
 	<a href="/" class="flex-shrink-0 flex items-center">

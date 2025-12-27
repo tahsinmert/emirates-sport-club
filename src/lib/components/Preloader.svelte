@@ -12,18 +12,18 @@
 	onMount(() => {
 		if (typeof window === 'undefined') return;
 
-		// Counter animasyonu: 0'dan 100'e 2.5 saniyede
+		// Counter animasyonu: 0'dan 10'a 2.5 saniyede
 		const counterTween = gsap.to(
 			{ value: 0 },
 			{
-				value: 100,
+				value: 10,
 				duration: 2.5,
 				ease: 'power2.out',
 				onUpdate: function () {
 					progress = Math.round(this.targets()[0].value);
 				},
 				onComplete: () => {
-					// 100%'e ulaşınca, preloader'ı yukarı kaydır
+					// 10'a ulaşınca, preloader'ı yukarı kaydır
 					if (preloader) {
 						gsap.to(preloader, {
 							yPercent: -100,
@@ -49,13 +49,13 @@
 
 <div
 	bind:this={preloader}
-	class="fixed inset-0 z-[100] bg-secondary-black flex items-center justify-center"
+	class="fixed inset-0 z-[9999] bg-secondary-black flex items-center justify-center"
 >
 	<div
 		class="headline text-[8rem] sm:text-[12rem] md:text-[16rem] lg:text-[20rem] font-bold text-primary-gold leading-none"
 		style="font-family: 'Oswald', sans-serif;"
 	>
-		{progress}%
+		{progress}
 	</div>
 </div>
 
