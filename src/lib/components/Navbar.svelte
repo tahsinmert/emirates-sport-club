@@ -153,7 +153,7 @@
 
 <nav
 	bind:this={navbar}
-	class="fixed top-0 left-0 w-full z-[100] flex items-center px-8 py-6 transition-all duration-500 mix-blend-difference text-white {isScrolled
+	class="fixed top-0 left-0 w-full z-[1000] flex items-center px-8 py-6 transition-all duration-500 mix-blend-difference text-white {isScrolled
 		? 'backdrop-blur-md bg-gradient-to-b from-black/50 to-transparent'
 		: ''} {!preloaderLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}"
 >

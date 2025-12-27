@@ -16,7 +16,7 @@
 	let { children, data } = $props();
 
 	let isLoaded = $state(false);
-	let mounted = $state(false);
+	let isMounted = $state(false);
 
 	// SEO Meta Tags
 	const pageTitle = $derived($page.url.pathname === '/'
@@ -46,7 +46,7 @@
 	const pageImage = $derived('https://emiratessportclub.com/og-image.jpg');
 
 	onMount(() => {
-		mounted = true;
+		isMounted = true;
 		
 		if (!browser) return;
 
@@ -130,15 +130,12 @@
 	<link rel="canonical" content="https://emiratessportclub.com{$page.url.pathname}" />
 </svelte:head>
 
-{#if !isLoaded}
-	<Preloader on:loaded={handlePreloaderLoaded} />
-{/if}
-
-{#if mounted && isLoaded}
-	<CustomCursor />
-{/if}
-{#if mounted}
+{#if isMounted}
+	{#if !isLoaded}
+		<Preloader on:loaded={handlePreloaderLoaded} />
+	{/if}
 	<Navbar />
+	<CustomCursor />
 {/if}
 <PageTransition />
 

@@ -129,5 +129,11 @@
 	.text-h3-fluid {
 		font-size: clamp(1.5rem, 4vw, 4rem);
 	}
+
+	/* Prevent FOUC (Flash of Unstyled Content) before GSAP animations */
+	.gsap-hidden {
+		opacity: 0;
+		visibility: hidden;
+	}
 }
 
