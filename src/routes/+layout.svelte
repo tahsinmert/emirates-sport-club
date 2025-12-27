@@ -11,6 +11,7 @@
 	import Preloader from '$lib/components/Preloader.svelte';
 	import Footer from '$lib/components/Footer.svelte';
 	import { page } from '$app/stores';
+	import { isPreloaderLoaded } from '$lib/stores/preloader';
 
 	let { children, data } = $props();
 
@@ -48,6 +49,9 @@
 		mounted = true;
 		
 		if (!browser) return;
+
+		// Her sayfa yüklemesinde preloader store'unu sıfırla
+		isPreloaderLoaded.set(false);
 
 		// Preloader sırasında Lenis'i pause et
 		pauseLenis();
@@ -130,8 +134,10 @@
 	<Preloader on:loaded={handlePreloaderLoaded} />
 {/if}
 
-{#if mounted}
+{#if mounted && isLoaded}
 	<CustomCursor />
+{/if}
+{#if mounted}
 	<Navbar />
 {/if}
 <PageTransition />

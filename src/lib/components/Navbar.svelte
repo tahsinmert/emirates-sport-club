@@ -63,7 +63,7 @@
 			// Preloader tamamlandıktan sonra scroll event'lerini başlat
 			if (loaded && navbar) {
 				// Navbar'ı görünür yap
-				gsap.set(navbar, { yPercent: 0 });
+				gsap.set(navbar, { yPercent: 0, opacity: 1 });
 				
 				// Scroll event listener'larını başlat
 				setupScrollListeners();
@@ -74,6 +74,10 @@
 		const currentState = get(isPreloaderLoaded);
 		if (currentState) {
 			preloaderLoaded = true;
+			// Navbar'ı görünür yap
+			if (navbar) {
+				gsap.set(navbar, { yPercent: 0, opacity: 1 });
+			}
 			setupScrollListeners();
 		}
 
@@ -149,9 +153,9 @@
 
 <nav
 	bind:this={navbar}
-	class="fixed top-0 left-0 w-full z-[100] flex items-center px-8 py-6 transition-transform duration-500 mix-blend-difference text-white {isScrolled
+	class="fixed top-0 left-0 w-full z-[100] flex items-center px-8 py-6 transition-all duration-500 mix-blend-difference text-white {isScrolled
 		? 'backdrop-blur-md bg-gradient-to-b from-black/50 to-transparent'
-		: ''} {!preloaderLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100'}"
+		: ''} {!preloaderLoaded ? 'opacity-0 pointer-events-none' : 'opacity-100 pointer-events-auto'}"
 >
 	<!-- Logo -->
 	<a href="/" class="flex-shrink-0 flex items-center">
