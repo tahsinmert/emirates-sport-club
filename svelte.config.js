@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-netlify';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -8,9 +8,10 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		// Vercel adapter for optimized deployments
+		// Netlify adapter for optimized deployments
 		adapter: adapter({
-			runtime: 'nodejs20.x'
+			edge: false,
+			split: false
 		})
 	}
 };
